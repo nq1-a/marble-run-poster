@@ -1,6 +1,7 @@
 from base64 import b64encode
 from pathlib import Path
-import urllib.request
+from re import sub
+from requests import post
 
 # Base64 utilities
 def img_to_b64(location: str) -> str:
@@ -12,7 +13,7 @@ def b64_url_encode(b64: str) -> str:
   return b64.replace("-", "%3D").replace("/", "%2F").replace("+", "%2B")
 
 # Headers
-headers = {
+headers: dict[str, str] = {
     "POST": "/tracks HTTP/1.1",
     "Host": "www.marblerun.at",
     "Accept": "application/json",
@@ -42,11 +43,11 @@ def main():
 
     # Get image
     img_path: str = "res/" + input("Image file name: ")
-    img_data: str = f"data:image/png;base64,{b64_url_encode(img_to_b64(img_path))}"
+    img_data: str = "data:image/png;base64," + b64_url_encode(img_to_b64(img_path))
 
     # Get track data
     with open("tracks/" + input("Track file name: ")) as f:
-        track_json: str = f.read()
+        track_json: str = sub(r"\s", "", f.read())
 
     # Get other data
     username: str = input("Username: ").upper()
@@ -63,9 +64,8 @@ def main():
     }
 
     # Send request
-    req = urllib.request.Request("https://www.marblerun.at/tracks", data=track_data, headers=headers)
-    res = urllib.request.urlopen(req)
-    print(res.status)
+    with post("https://www.marblerun.at/tracks", data=track_data, headers=headers) as res:
+        print(res.reason)
 
 if __name__ == "__main__":
     main()

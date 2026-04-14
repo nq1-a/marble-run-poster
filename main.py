@@ -26,7 +26,6 @@ headers = {
     "Sec-Fetch-Site": "same-origin",
     "X-Requested-With": "XMLHttpRequest",
     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-    "DNT": "1",
 }
 
 # Main method
@@ -52,21 +51,19 @@ def main():
     # Get other data
     username: str = input("Username: ").upper()
     track_name: str = input("Track name: ").upper()
-    length: int = round(float(input("Length (in meters): ")) * 10)
-    duration: int = round(float(input("Duration (in seconds): ")) * 1000)
 
     # Format track data
     track_data: dict[str, str | int] = {
         "track[json]": track_json,
-        "track[length]": length,
-        "track[duration]": duration,
+        "track[length]": 9999,
+        "track[duration]": 69420000,
         "track[imagedata]": img_data,
         "track[username]": username,
         "track[trackname]": track_name,
     }
 
     # Send request
-    req = urllib.request.Request("https://www.marblerun.at/tracks", headers=headers)
+    req = urllib.request.Request("https://www.marblerun.at/tracks", data=track_data, headers=headers)
     res = urllib.request.urlopen(req)
     print(res.status)
 

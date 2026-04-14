@@ -3,6 +3,8 @@ from pathlib import Path
 from re import sub
 from requests import post
 
+from gens import *
+
 # Base64 utilities
 def img_to_b64(location: str) -> str:
   with open(str(location), "rb") as image:

@@ -68,7 +68,7 @@ def main():
     # Send request
     req = urllib.request.Request("https://www.marblerun.at/tracks", headers=headers)
     res = urllib.request.urlopen(req)
-    print(res.status_code)
+    print(res.status)
 
 if __name__ == "__main__":
     main()

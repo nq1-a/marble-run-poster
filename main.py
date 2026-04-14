@@ -1,4 +1,5 @@
 from base64 import b64encode
+from pathlib import Path
 import urllib.request
 
 # Base64 utilities
@@ -30,6 +31,16 @@ headers = {
 
 # Main method
 def main():
+    # Create directories if they do not exist
+    try:
+        Path("res/").mkdir()
+        Path("tracks/").mkdir()
+    except FileExistsError:
+        pass
+    else:
+        print("Directories created. Put data in these folders and rerun this file.")
+        return
+
     # Get image
     img_path: str = "res/" + input("Image file name: ")
     img_data: str = f"data:image/png;base64,{b64_url_encode(img_to_b64(img_path))}"

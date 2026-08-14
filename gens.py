@@ -8,7 +8,7 @@ def curly(base):
                 continue
             
             base["bricks"][str(r * 10 + c)] = {
-                "type": "Boost",
+                "type": "BallBox",
                 "rotation": r / 15 + c / 10,
                 "row": r,
                 "col": c

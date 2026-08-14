@@ -5,14 +5,18 @@ from requests import post
 
 from gens import *
 
-# Base64 utilities
+# Base64 & file read utilities
 def img_to_b64(location: str) -> str:
-  with open(str(location), "rb") as image:
+  with open(location, "rb") as image:
       string: bytes = b64encode(image.read())
       return string.decode("utf-8")
 
 def b64_url_encode(b64: str) -> str:
   return b64.replace("-", "%3D").replace("/", "%2F").replace("+", "%2B")
+
+def rfread(location: str) -> str:
+    with open(location) as image:
+        return image.read()
 
 # Headers
 headers: dict[str, str] = {
@@ -45,7 +49,9 @@ def main():
 
     # Get image
     img_path: str = "res/" + input("Image file name: ")
-    img_data: str = "data:image/png;base64," + b64_url_encode(img_to_b64(img_path))
+    img_data: str = "data:image/png;base64," + b64_url_encode(img_to_b64(img_path)) \
+                    if not input("Is injected data? (y/N) ").lower().startswith("y") \
+                    else rfread(img_path)
 
     # Get track data
     with open("tracks/" + input("Track file name: ")) as f:
